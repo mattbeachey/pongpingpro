@@ -13,10 +13,10 @@ public class Game {
     @Version
     private Integer version;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Player winner;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Player loser;
 
     private Integer winnerScore;
@@ -30,6 +30,13 @@ public class Game {
     private Integer eloDiff;
 
     private LocalDate gameDate;
+
+
+    public Game(){}
+    public Game(Player winner, Player loser){
+        setWinner(winner);
+        setLoser(loser);
+    }
 
 
     public Integer getId() {

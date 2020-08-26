@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class GameResult {
@@ -34,10 +35,13 @@ public class GameResult {
         newGame.setGameDate(gameDate);
         newGame.setWinner(winner);
         newGame.setLoser(loser);
+        newGame.setWinnerScore(winnerScore);
+        newGame.setLoserScore(loserScore);
         newGame.setWinnerEloBefore(winner.getEloRating());
         newGame.setLoserEloBefore(loser.getEloRating());
         newGame.setUpset(winner.getEloRating() < loser.getEloRating());
         newGame.setUpsetPercent((int)(winnerExpectedOutcome * 100));
+        newGame.setEloDiff(eloDiff);
 
         //adjust respective ELO ratings
         winner.setEloRating(RatingAdjust.newRating(winner.getEloRating(), winnerExpectedOutcome, 1));
@@ -48,6 +52,19 @@ public class GameResult {
 
         //add adjusted scores to game and save it
         newGame.setWinnerEloAfter(winner.getEloRating());
+        newGame.setLoserEloAfter(loser.getEloRating());
+        gameService.saveGame(newGame);
+        log.info(newGame.getWinner().getUsername());
     }
+
+//    public void gameTest(Game gameToSave){
+//        gameService.saveGame(gameToSave);
+//
+//        List<Game> gameList = gameService.findAllGames();
+//
+//        for (Game game : gameList){
+//            log.info("Game winner: " + game.getWinner().getUsername());
+//        }
+//    }
 
 }

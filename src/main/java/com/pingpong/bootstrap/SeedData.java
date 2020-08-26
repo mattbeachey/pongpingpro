@@ -1,6 +1,7 @@
 package com.pingpong.bootstrap;
 
 import com.pingpong.common.GameResult;
+import com.pingpong.domain.Game;
 import com.pingpong.domain.Player;
 import com.pingpong.repositories.GameRepository;
 import com.pingpong.repositories.PlayerRepository;
@@ -14,6 +15,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
@@ -59,7 +61,8 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
                 + " and "
                 + playerService.findPlayerById(1).getUsername()
                 + " now has an ELO of " + playerService.findPlayerById(1).getEloRating());
-    }
+
+     }
 
     private void generateSeedPlayers(int numberOfPlayers){
         System.out.println("generating " + numberOfPlayers + " players");
@@ -69,6 +72,18 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
                 player.setEloRating((int)(player.getEloRating() * 1.1));
             playerService.savePlayer(player);
         }
+    }
+
+
+    private void gameTest(){
+        Player winner = playerService.findPlayerById(5);
+        Player loser = playerService.findPlayerById(6);
+        Game newGame = new Game();
+        newGame.setWinner(winner);
+        newGame.setLoser(loser);
+        gameService.saveGame(newGame);
+        log.info("Game winner from database: " + gameService.findGameById(1).getWinner().getUsername());
+
     }
 
 }

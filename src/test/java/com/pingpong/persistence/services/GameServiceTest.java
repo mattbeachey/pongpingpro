@@ -6,6 +6,7 @@ import com.pingpong.Application;
 import com.pingpong.domain.Game;
 import com.pingpong.domain.Player;
 import com.pingpong.services.GameService;
+import com.pingpong.services.PlayerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +25,29 @@ public class GameServiceTest {
 
     @Autowired
     private GameService gameService;
+    @Autowired
+    private PlayerService playerService;
 
     @Test
     public void testSave() {
         Game game = new Game();
         game.setWinnerEloBefore(1600);
         game.setLoserEloBefore(1500);
-        game.setWinner(new Player("beecheese"));
-        game.setLoser(new Player("doofus"));
+        Player winner = new Player("asdf");
+        Player loser = new Player("jkl;");
+
+        playerService.savePlayer(winner);
+        playerService.savePlayer(loser);
+
+        System.out.println("Player ID: " + playerService.findPlayerByUsername("asdf").getId());
+
+        game.setWinner(playerService.findPlayerByUsername("asdf"));
+        game.setLoser(playerService.findPlayerByUsername("jkl;"));
 
         assertNull(game.getId());
         gameService.saveGame(game);
         assertNotNull(game.getId());
+        System.out.println("Saved game winner: " + gameService.findGameById(1).getWinner().getUsername());
 
         //fetch
         Game fetchedGame = gameService.findGameById(game.getId());
