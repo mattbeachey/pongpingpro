@@ -45,22 +45,24 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
             log.info("no players on file, generating test data");
             generateSeedPlayers(20);
         }
-        log.info(playerService.findPlayerById(2).getUsername()
+        log.info(playerService.findPlayerById(3).getUsername()
                 + " (ELO of "
-                + playerService.findPlayerById(2).getEloRating()
+                + playerService.findPlayerById(3).getEloRating()
                 + ") beats "
-                + playerService.findPlayerById(1).getUsername()
-                + " (ELO of " + playerService.findPlayerById(1).getEloRating()
+                + playerService.findPlayerById(4).getUsername()
+                + " (ELO of " + playerService.findPlayerById(4).getEloRating()
                 + ")");
 
         gameResult.newGame(playerService.findPlayerById(2), playerService.findPlayerById(1), 21, 16, LocalDate.now());
+        gameResult.newGame(playerService.findPlayerById(3), playerService.findPlayerById(4), 21, 19, LocalDate.now());
 
-        log.info(playerService.findPlayerById(2).getUsername()
+
+        log.info(playerService.findPlayerById(3).getUsername()
                 + " now has an ELO of "
-                + playerService.findPlayerById(2).getEloRating()
+                + playerService.findPlayerById(3).getEloRating()
                 + " and "
-                + playerService.findPlayerById(1).getUsername()
-                + " now has an ELO of " + playerService.findPlayerById(1).getEloRating());
+                + playerService.findPlayerById(4).getUsername()
+                + " now has an ELO of " + playerService.findPlayerById(4).getEloRating());
 
      }
 

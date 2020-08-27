@@ -16,7 +16,7 @@ public class Player {
     private String firstName;
     @Column(name = "LastName")
     private String lastName;
-//    @Column(unique = true)
+    @Column(unique = true)
     private String username;
 
     private Integer eloRating = 1200;
