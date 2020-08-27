@@ -32,12 +32,16 @@ public class Game {
     private LocalDate gameDate;
 
 
+    //region CONSTRUCTORS
     public Game(){}
     public Game(Player winner, Player loser){
         setWinner(winner);
         setLoser(loser);
     }
+    //endregion
 
+
+    //region GETTERS/SETTERS
 
     public Integer getId() {
         return Id;
@@ -150,4 +154,6 @@ public class Game {
     public void setEloDiff(Integer eloDiff) {
         this.eloDiff = eloDiff;
     }
+
+    //endregion
 }

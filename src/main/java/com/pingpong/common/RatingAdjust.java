@@ -10,15 +10,21 @@ public class RatingAdjust {
     }
 
     static int newRating(int currentRating, double expectedOutcome, double outcome){
-        //new rating concept explained here: https://youtu.be/AsYfbmp0To0
+        //new rating concept explained here: https://youtu.be/AsYfbmp0To
+        double adjustedRating = currentRating + (32 * (outcome - expectedOutcome));
+
+        //ELO floor is 100
+        if (adjustedRating < 100){
+            return 100;
+        }
 
         //checking to see if ELO should round up before returning as int
-        if ((currentRating + (32 * (outcome - expectedOutcome))) - Math.floor((currentRating + (32 * (outcome - expectedOutcome)))) >= 0.5){
-            return (int)Math.ceil(currentRating + (32 * (outcome - expectedOutcome)));
+        if ((adjustedRating) - Math.floor((adjustedRating)) >= 0.5){
+            return (int)Math.ceil(adjustedRating);
         }
 
         //otherwise cast as int to round down
-        return (int)(currentRating + (32 * (outcome - expectedOutcome)));
+        return (int)(adjustedRating);
     }
 
 }

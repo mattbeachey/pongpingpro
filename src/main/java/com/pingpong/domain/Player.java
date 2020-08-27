@@ -26,14 +26,15 @@ public class Player {
     @OneToOne
     private Player bestWin;
 
-
+    //region CONSTRUCTORS
     public Player(){}
 
     public Player (String username){
         setUsername(username);
     }
+    //endregion
 
-
+    //region GETTERS/SETTERS
     public Integer getId() {
         return Id;
     }
@@ -105,4 +106,5 @@ public class Player {
     public void setBestWin(Player bestWin) {
         this.bestWin = bestWin;
     }
+    //endregion
 }

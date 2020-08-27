@@ -24,6 +24,15 @@ public class GameResult {
     GameService gameService;
 
     public void newGame (Player winner, Player loser, int winnerScore, int loserScore, LocalDate gameDate){
+
+//        log.info(winner.getUsername()
+//                + " (ELO of "
+//                + winner.getEloRating()
+//                + ") beats "
+//                + loser.getUsername()
+//                + " (ELO of " + loser.getEloRating()
+//                + ")");
+
         int eloDiff = Math.abs(winner.getEloRating() - loser.getEloRating());
 
         //determining the expected outcome for each player (1 being sure win, 0 being sure loss, etc)
@@ -43,28 +52,27 @@ public class GameResult {
         newGame.setUpsetPercent((int)(winnerExpectedOutcome * 100));
         newGame.setEloDiff(eloDiff);
 
-        //adjust respective ELO ratings
+        //adjust respective ELO ratings and wins/losses
         winner.setEloRating(RatingAdjust.newRating(winner.getEloRating(), winnerExpectedOutcome, 1));
+        int adjustedWins = winner.getWins() == null ? 1 : winner.getWins() + 1;
+        winner.setWins(adjustedWins);
         playerService.savePlayer(winner);
 
         loser.setEloRating(RatingAdjust.newRating(loser.getEloRating(), loserExpectedOutcome, 0));
+        int adjustedLosses = loser.getLosses() == null ? 1 : loser.getLosses() + 1;
+        loser.setLosses(adjustedLosses);
         playerService.savePlayer(loser);
 
         //add adjusted scores to game and save it
         newGame.setWinnerEloAfter(winner.getEloRating());
         newGame.setLoserEloAfter(loser.getEloRating());
         gameService.saveGame(newGame);
-        log.info(newGame.getWinner().getUsername());
+
+//        log.info(winner.getUsername()
+//                + " now has an ELO of "
+//                + winner.getEloRating()
+//                + " and "
+//                + loser.getUsername()
+//                + " now has an ELO of " + loser.getEloRating());
     }
-
-//    public void gameTest(Game gameToSave){
-//        gameService.saveGame(gameToSave);
-//
-//        List<Game> gameList = gameService.findAllGames();
-//
-//        for (Game game : gameList){
-//            log.info("Game winner: " + game.getWinner().getUsername());
-//        }
-//    }
-
 }

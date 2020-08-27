@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
@@ -37,32 +38,16 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
-//        log.info("message from SeedData class");
-//        generateSeedPlayers(20);
-
-        //generate only if database is empty
         if(playerService.findAllPlayers().size() == 0){
             log.info("no players on file, generating test data");
             generateSeedPlayers(20);
         }
-        log.info(playerService.findPlayerById(3).getUsername()
-                + " (ELO of "
-                + playerService.findPlayerById(3).getEloRating()
-                + ") beats "
-                + playerService.findPlayerById(4).getUsername()
-                + " (ELO of " + playerService.findPlayerById(4).getEloRating()
-                + ")");
 
-        gameResult.newGame(playerService.findPlayerById(2), playerService.findPlayerById(1), 21, 16, LocalDate.now());
-        gameResult.newGame(playerService.findPlayerById(3), playerService.findPlayerById(4), 21, 19, LocalDate.now());
+//        gameResult.newGame(playerService.findPlayerById(2), playerService.findPlayerById(1), 21, 16, LocalDate.now());
 
-
-        log.info(playerService.findPlayerById(3).getUsername()
-                + " now has an ELO of "
-                + playerService.findPlayerById(3).getEloRating()
-                + " and "
-                + playerService.findPlayerById(4).getUsername()
-                + " now has an ELO of " + playerService.findPlayerById(4).getEloRating());
+        IntStream.range(1, 5).forEach(i -> {
+            gameResult.newGame(playerService.findPlayerById(4), playerService.findPlayerById(5), 21, 19, LocalDate.now());
+        });
 
      }
 
@@ -71,7 +56,7 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
         for (int i = 0; i < numberOfPlayers; i++){
             Player player = new Player("Player " + (i + 1));
             if (i % 4 == 0)
-                player.setEloRating((int)(player.getEloRating() * 1.1));
+                player.setEloRating(110);
             playerService.savePlayer(player);
         }
     }
