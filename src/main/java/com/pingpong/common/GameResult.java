@@ -24,15 +24,6 @@ public class GameResult {
     GameService gameService;
 
     public void newGame (Player winner, Player loser, int winnerScore, int loserScore, LocalDate gameDate){
-
-//        log.info(winner.getUsername()
-//                + " (ELO of "
-//                + winner.getEloRating()
-//                + ") beats "
-//                + loser.getUsername()
-//                + " (ELO of " + loser.getEloRating()
-//                + ")");
-
         int eloDiff = Math.abs(winner.getEloRating() - loser.getEloRating());
 
         //determining the expected outcome for each player (1 being sure win, 0 being sure loss, etc)
@@ -67,12 +58,30 @@ public class GameResult {
         newGame.setWinnerEloAfter(winner.getEloRating());
         newGame.setLoserEloAfter(loser.getEloRating());
         gameService.saveGame(newGame);
+    }
 
+    public int winOdds (int eloLow, int eloHigh){
+        return (int)(RatingAdjust.expectedOutcome(eloLow, eloHigh) * 100);
+    }
+
+}
+
+
+
+
+
+
+
+//        log.info(winner.getUsername()
+//                + " (ELO of "
+//                + winner.getEloRating()
+//                + ") beats "
+//                + loser.getUsername()
+//                + " (ELO of " + loser.getEloRating()
+//                + ")");
 //        log.info(winner.getUsername()
 //                + " now has an ELO of "
 //                + winner.getEloRating()
 //                + " and "
 //                + loser.getUsername()
 //                + " now has an ELO of " + loser.getEloRating());
-    }
-}

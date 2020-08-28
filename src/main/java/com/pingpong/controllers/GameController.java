@@ -1,7 +1,9 @@
 package com.pingpong.controllers;
 
 import com.pingpong.common.GameResult;
+import com.pingpong.common.RatingAdjust;
 import com.pingpong.domain.Game;
+import com.pingpong.domain.Player;
 import com.pingpong.services.GameService;
 import com.pingpong.services.PlayerService;
 import org.slf4j.Logger;
@@ -52,11 +54,29 @@ public class GameController {
         }
     }
 
+    @RequestMapping(value = "/new/{p1Id}/{p2Id}", method = RequestMethod.GET)
+    public ResponseEntity<Integer> setUpGame(@PathVariable int p1Id,
+                                             @PathVariable int p2Id){
+        Player player1, player2;
+        if (playerService.findPlayerById(p1Id).getEloRating() <= playerService.findPlayerById(p2Id).getEloRating()){
+            player1 = playerService.findPlayerById(p1Id);
+            player2 = playerService.findPlayerById(p2Id);
+        } else {
+            player1 = playerService.findPlayerById(p2Id);
+            player2 = playerService.findPlayerById(p1Id);
+        }
+
+        int winOdds = gameResult.winOdds(player1.getEloRating(), player2.getEloRating());
+        log.info(player1.getUsername() + " has a " + winOdds + " percent chance of beating " + player2.getUsername());
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(winOdds);
+    }
+
     @RequestMapping(value = "/new/{winId}/{loseId}/{winScore}/{loseScore}", method = RequestMethod.POST)
-    public ResponseEntity<Game> addNewGame(@PathVariable int winId,
-                                           @PathVariable int loseId,
-                                           @PathVariable int winScore,
-                                           @PathVariable int loseScore){
+    public ResponseEntity<Game> saveFinalGame(  @PathVariable int winId,
+                                                @PathVariable int loseId,
+                                                @PathVariable int winScore,
+                                                @PathVariable int loseScore){
         log.info("New game, " + playerService.findPlayerById(winId).getUsername() + " vs. " + playerService.findPlayerById(loseId).getUsername());
         try {
             gameResult.newGame(
