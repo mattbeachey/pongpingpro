@@ -11,7 +11,7 @@
     <groupId>com.astontech.virl</groupId>
     <artifactId>pingpong</artifactId>
     <version>1.0</version>
-    <name>com.pingpong/name>
+    <name>com.pingpong</name>
     <description>Elo-based ping pong rating and game system</description>
 
     <properties>
