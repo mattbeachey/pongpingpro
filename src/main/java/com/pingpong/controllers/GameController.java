@@ -38,8 +38,8 @@ public class GameController {
     private GameResult gameResult;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Game> getAllGames(){
-        return gameService.findAllGames();
+    public ResponseEntity<List<Game>>  getAllGames(){
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(gameService.findAllGames());
     }
 
     @RequestMapping(value = "{id}", method  =RequestMethod.GET)
@@ -55,26 +55,29 @@ public class GameController {
     }
 
     @RequestMapping(value = "/new/{p1Id}/{p2Id}", method = RequestMethod.GET)
-    public ResponseEntity<Integer> setUpGame(@PathVariable int p1Id,
-                                             @PathVariable int p2Id){
-        Player player1, player2;
-        if (playerService.findPlayerById(p1Id).getEloRating() <= playerService.findPlayerById(p2Id).getEloRating()){
-            player1 = playerService.findPlayerById(p1Id);
-            player2 = playerService.findPlayerById(p2Id);
-        } else {
-            player1 = playerService.findPlayerById(p2Id);
-            player2 = playerService.findPlayerById(p1Id);
+    public ResponseEntity<Integer> setUpGame(@PathVariable String p1Id,
+                                             @PathVariable String p2Id){
+        try {
+            Player player1, player2;
+            if (playerService.findPlayerById(p1Id).getEloRating() <= playerService.findPlayerById(p2Id).getEloRating()){
+                player1 = playerService.findPlayerById(p1Id);
+                player2 = playerService.findPlayerById(p2Id);
+            } else {
+                player1 = playerService.findPlayerById(p2Id);
+                player2 = playerService.findPlayerById(p1Id);
+            }
+            int winOdds = gameResult.winOdds(player1.getEloRating(), player2.getEloRating());
+            log.info(player1.getUsername() + " has a " + winOdds + " percent chance of beating " + player2.getUsername());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(winOdds);
+        } catch (Exception ex){
+            log.error(String.valueOf(ex));
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(null);
         }
-
-        int winOdds = gameResult.winOdds(player1.getEloRating(), player2.getEloRating());
-        log.info(player1.getUsername() + " has a " + winOdds + " percent chance of beating " + player2.getUsername());
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(winOdds);
     }
 
     @RequestMapping(value = "/new/{winId}/{loseId}/{winScore}/{loseScore}", method = RequestMethod.POST)
-    public ResponseEntity<Game> saveFinalGame(  @PathVariable int winId,
-                                                @PathVariable int loseId,
+    public ResponseEntity<Game> saveFinalGame(  @PathVariable String winId,
+                                                @PathVariable String loseId,
                                                 @PathVariable int winScore,
                                                 @PathVariable int loseScore){
         log.info("New game, " + playerService.findPlayerById(winId).getUsername() + " vs. " + playerService.findPlayerById(loseId).getUsername());

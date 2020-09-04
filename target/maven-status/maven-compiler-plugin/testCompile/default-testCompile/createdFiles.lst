@@ -1,0 +1,4 @@
+com/pingpong/persistence/services/GameServiceTest.class
+com/pingpong/persistence/repositories/PlayerRepositoryTest.class
+com/pingpong/persistence/repositories/GameRepositoryTest.class
+com/pingpong/persistence/services/PlayerServiceTest.class

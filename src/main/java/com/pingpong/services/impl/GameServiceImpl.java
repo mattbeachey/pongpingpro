@@ -23,7 +23,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game findGameById(Integer id) {
-        return gameRepository.findOne(id);
+        return gameRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -35,6 +35,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void deleteGame(Integer id) {
-
+        gameRepository.deleteById(id);
     }
 }

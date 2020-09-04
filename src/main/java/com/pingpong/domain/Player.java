@@ -1,30 +1,27 @@
 package com.pingpong.domain;
 
-import javax.persistence.*;
+import org.springframework.data.redis.core.RedisHash;
 
-@Entity
+//import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.index.Indexed;
+
+
+@RedisHash("player")
 public class Player {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PlayerId")
-    private Integer Id;
+    private String Id;
 
-    @Version
-    private Integer version;
-
-    @Column(name = "FirstName")
-    private String firstName;
-    @Column(name = "LastName")
-    private String lastName;
-    @Column(unique = true)
-    private String username;
-
-    private Integer eloRating = 1200;
-    private Integer wins;
-    private Integer losses;
-
-    @OneToOne
-    private Player bestWin;
+    String firstName;
+    String lastName;
+    @Indexed
+    String username;
+    String name;
+    @Indexed
+    Integer eloRating = 1200;
+    Integer wins = 0;
+    Integer losses = 0;
+    Player bestWin;
 
     //region CONSTRUCTORS
     public Player(){}
@@ -35,20 +32,12 @@ public class Player {
     //endregion
 
     //region GETTERS/SETTERS
-    public Integer getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         Id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getFirstName() {
@@ -105,6 +94,14 @@ public class Player {
 
     public void setBestWin(Player bestWin) {
         this.bestWin = bestWin;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     //endregion
 }

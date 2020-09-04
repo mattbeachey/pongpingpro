@@ -3,8 +3,20 @@ package com.pingpong.repositories;
 import com.pingpong.domain.Player;
 import org.springframework.data.repository.CrudRepository;
 
-public interface PlayerRepository extends CrudRepository<Player, Integer> {
+import java.util.List;
 
-    Player findPlayerByUsername (String username);
+public interface PlayerRepository extends CrudRepository<Player, String> {
+
+    Player findByUsername (String username);
+
+    Player findPlayerByFirstName (String firstName);
+
+    Player findPlayerByName (String name);
+
+    Player findPlayerByEloRating (int elo);
+
+    Player findByEloRating (int elo);
+
+    List<Player> findPlayersByEloRating (Integer eloRating);
 
 }

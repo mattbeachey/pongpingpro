@@ -1,34 +1,36 @@
 package com.pingpong.domain;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+//import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
+
+//@Entity
+@RedisHash("game")
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "GameId")
     private Integer Id;
 
-    @Version
-    private Integer version;
-
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @Indexed
     private Player winner;
-
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @Indexed
     private Player loser;
-
     private Integer winnerScore;
     private Integer loserScore;
     private Integer winnerEloBefore;
     private Integer loserEloBefore;
     private Integer winnerEloAfter;
     private Integer loserEloAfter;
+    @Indexed
     private Boolean upset;
+    @Indexed
     private Integer upsetPercent;
+    @Indexed
     private Integer eloDiff;
-
+    @Indexed
     private LocalDate gameDate;
 
 
@@ -49,14 +51,6 @@ public class Game {
 
     public void setId(Integer id) {
         Id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Player getWinner() {

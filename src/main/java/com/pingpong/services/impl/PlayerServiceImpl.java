@@ -11,6 +11,15 @@ import java.util.List;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
+    @Override
+    public Player findPlayerByEloRating(int elo) {
+        return playerRepository.findPlayerByEloRating(elo);
+    }
+
+    @Override
+    public Player findByEloRating(int elo) {
+        return playerRepository.findByEloRating(elo);
+    }
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -21,13 +30,18 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player findPlayerById(Integer id) {
-        return playerRepository.findOne(id);
+    public Player findPlayerByName(String name) {
+        return playerRepository.findPlayerByName(name);
     }
 
     @Override
-    public Player findPlayerByUsername(String username) {
-        return playerRepository.findPlayerByUsername(username);
+    public Player findPlayerById(String id) {
+        return playerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Player findByUsername(String username) {
+        return playerRepository.findByUsername(username);
     }
 
     @Override
@@ -38,7 +52,19 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void deletePlayer(Integer id) {
-        playerRepository.delete(id);
+    public List<Player> findPlayersByEloRating(Integer eloRating) {
+        List<Player> playerList = new ArrayList<>();
+        playerRepository.findPlayersByEloRating(eloRating).forEach(playerList::add);
+        return playerList;
+    }
+
+    @Override
+    public Player findPlayerByFirstName(String firstName) {
+        return playerRepository.findPlayerByFirstName(firstName);
+    }
+
+    @Override
+    public void deletePlayer(String id) {
+        playerRepository.deleteById(id);
     }
 }

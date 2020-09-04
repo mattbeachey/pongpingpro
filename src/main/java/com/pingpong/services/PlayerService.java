@@ -8,12 +8,22 @@ public interface PlayerService {
 
     Player savePlayer(Player player);
 
-    Player findPlayerById(Integer id);
+    Player findPlayerById(String id);
 
-    Player findPlayerByUsername(String username);
+    Player findByUsername(String username);
+
+    Player findPlayerByName (String name);
 
     List<Player> findAllPlayers();
 
-    void deletePlayer(Integer id);
+    List<Player> findPlayersByEloRating(Integer eloRating);
+
+    Player findPlayerByEloRating (int elo);
+
+    Player findByEloRating (int elo);
+
+    Player findPlayerByFirstName (String firstName);
+
+    void deletePlayer(String id);
 
 }

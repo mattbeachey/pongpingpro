@@ -1,0 +1,17 @@
+com/pingpong/controllers/GameController.class
+com/pingpong/services/impl/PlayerServiceImpl.class
+com/pingpong/services/GameService.class
+com/pingpong/repositories/GameRepository.class
+com/pingpong/controllers/filters/CorsFilter.class
+com/pingpong/configuration/SecurityConfig.class
+com/pingpong/Application.class
+com/pingpong/common/GameResult.class
+com/pingpong/bootstrap/SeedData.class
+com/pingpong/common/RatingAdjust.class
+com/pingpong/repositories/PlayerRepository.class
+com/pingpong/controllers/PlayerController.class
+com/pingpong/controllers/RoutingController.class
+com/pingpong/domain/Game.class
+com/pingpong/services/impl/GameServiceImpl.class
+com/pingpong/services/PlayerService.class
+com/pingpong/domain/Player.class

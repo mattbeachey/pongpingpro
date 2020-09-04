@@ -41,12 +41,30 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
         if(playerService.findAllPlayers().size() == 0){
             log.info("no players on file, generating test data");
             generateSeedPlayers(20);
+
         }
+
+        try {
+            Player player2k = playerService.findByEloRating(2000);
+            log.info(player2k.getUsername());
+        } catch (Exception ex){
+            log.error("find by elo test failed");
+            log.error(String.valueOf(ex));
+        }
+
+        try {
+            Player player2k = playerService.findPlayerByEloRating(2000);
+            log.info(player2k.getUsername());
+        } catch (Exception ex){
+            log.error("find player by elo test failed");
+            log.error(String.valueOf(ex));
+        }
+
 
 //        gameResult.newGame(playerService.findPlayerById(2), playerService.findPlayerById(1), 21, 16, LocalDate.now());
 
         IntStream.range(1, 5).forEach(i -> {
-            gameResult.newGame(playerService.findPlayerById(4), playerService.findPlayerById(5), 21, 19, LocalDate.now());
+            gameResult.newGame(playerService.findByUsername("Player 1"), playerService.findByUsername("Player 2"), 21, 19, LocalDate.now());
         });
 
      }
@@ -55,22 +73,28 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
         System.out.println("generating " + numberOfPlayers + " players");
         for (int i = 0; i < numberOfPlayers; i++){
             Player player = new Player("Player " + (i + 1));
-            if (i % 4 == 0)
+            if (i % 4 == 0 && i != 0)
                 player.setEloRating(110);
+            if (i == 0) {
+                player.setFirstName("dude");
+                player.setEloRating(2000);
+            }
+            player.setName("Name " + i);
+            log.info("Player number " + i + ": " + player.getFirstName());
             playerService.savePlayer(player);
         }
     }
 
 
-    private void gameTest(){
-        Player winner = playerService.findPlayerById(5);
-        Player loser = playerService.findPlayerById(6);
-        Game newGame = new Game();
-        newGame.setWinner(winner);
-        newGame.setLoser(loser);
-        gameService.saveGame(newGame);
-        log.info("Game winner from database: " + gameService.findGameById(1).getWinner().getUsername());
-
-    }
+//    private void gameTest(){
+//        Player winner = playerService.findPlayerById(5);
+//        Player loser = playerService.findPlayerById(6);
+//        Game newGame = new Game();
+//        newGame.setWinner(winner);
+//        newGame.setLoser(loser);
+//        gameService.saveGame(newGame);
+//        log.info("Game winner from database: " + gameService.findGameById(1).getWinner().getUsername());
+//
+//    }
 
 }

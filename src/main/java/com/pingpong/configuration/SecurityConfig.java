@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
+//import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -38,20 +38,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .withUser("mentor").password("{noop}123").roles("MENTOR")
                     .and().withUser("mentee").password("{noop}123").roles("MENTEE");
 
-        } else if (authenticationMethod.equals("LDAP")){
-            auth.authenticationProvider(activeDirectoryLdapAuthenticatinoProvider());
         }
+//        else if (authenticationMethod.equals("LDAP")){
+//            auth.authenticationProvider(activeDirectoryLdapAuthenticatinoProvider());
+//        }
     }
 
-    @Bean
-    public AuthenticationProvider activeDirectoryLdapAuthenticatinoProvider(){
-        ActiveDirectoryLdapAuthenticationProvider authenticationProvider =
-                new ActiveDirectoryLdapAuthenticationProvider(ldapDomain, ldapUrl);
-        authenticationProvider.setConvertSubErrorCodesToExceptions(true);
-        authenticationProvider.setUseAuthenticationRequestCredentials(true);
-
-        return authenticationProvider;
-    }
+//    @Bean
+//    public AuthenticationProvider activeDirectoryLdapAuthenticatinoProvider(){
+//        ActiveDirectoryLdapAuthenticationProvider authenticationProvider =
+//                new ActiveDirectoryLdapAuthenticationProvider(ldapDomain, ldapUrl);
+//        authenticationProvider.setConvertSubErrorCodesToExceptions(true);
+//        authenticationProvider.setUseAuthenticationRequestCredentials(true);
+//
+//        return authenticationProvider;
+//    }
     //endregion
 
     //region ACCESS CONTROL
@@ -66,6 +67,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .csrf().disable();
 
+        }
+        else if(authenticationMethod.equals("OAUTH")){
+
+            http
+                    .antMatcher("/**").authorizeRequests()
+                    .antMatchers("/test/").permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .oauth2Login();
         }
 //        else if ( authenticationMethod.equals("LDAP") ||
 //                authenticationMethod.equals("IN_MEMORY")){
