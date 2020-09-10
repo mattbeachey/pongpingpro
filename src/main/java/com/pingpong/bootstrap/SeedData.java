@@ -44,23 +44,6 @@ public class SeedData implements ApplicationListener<ContextRefreshedEvent> {
 
         }
 
-        try {
-            Player player2k = playerService.findByEloRating(2000);
-            log.info(player2k.getUsername());
-        } catch (Exception ex){
-            log.error("find by elo test failed");
-            log.error(String.valueOf(ex));
-        }
-
-        try {
-            Player player2k = playerService.findPlayerByEloRating(2000);
-            log.info(player2k.getUsername());
-        } catch (Exception ex){
-            log.error("find player by elo test failed");
-            log.error(String.valueOf(ex));
-        }
-
-
 //        gameResult.newGame(playerService.findPlayerById(2), playerService.findPlayerById(1), 21, 16, LocalDate.now());
 
         IntStream.range(1, 5).forEach(i -> {

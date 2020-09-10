@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,15 +17,18 @@ public class PlayerController {
 
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
-    @Autowired
-    private PlayerService playerService;
+    //Constructor Injection
+    PlayerService playerService;
+    public PlayerController (PlayerService playerService){
+        this.playerService = playerService;
+    }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @GetMapping("/all")
     public ResponseEntity<List<Player>> getAllPlayers(){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(playerService.findAllPlayers());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public ResponseEntity<Player> getPlayerById(@PathVariable String id){
         try {
             Player foundPlayer = playerService.findPlayerById(id);

@@ -12,16 +12,22 @@ public class Player {
     @Id
     private String Id;
 
-    String firstName;
-    String lastName;
     @Indexed
-    String username;
-    String name;
+    private String authToken;
+    private String firstName;
+    private String lastName;
     @Indexed
-    Integer eloRating = 1200;
-    Integer wins = 0;
-    Integer losses = 0;
-    Player bestWin;
+    private String username;
+    private String name;
+    @Indexed
+    private Integer eloRating = 1200;
+    private Integer wins = 0;
+    private Integer losses = 0;
+    private String bestWinPlayerId;
+    private Integer bestWinElo = 0;
+    private Integer currentStreak = 0;
+    private Integer bestStreak = 0;
+    private Boolean wonPreviousGame = false;
 
     //region CONSTRUCTORS
     public Player(){}
@@ -88,14 +94,6 @@ public class Player {
         this.losses = losses;
     }
 
-    public Player getBestWin() {
-        return bestWin;
-    }
-
-    public void setBestWin(Player bestWin) {
-        this.bestWin = bestWin;
-    }
-
     public String getName() {
         return name;
     }
@@ -103,5 +101,54 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public Integer getCurrentStreak() {
+        return currentStreak;
+    }
+
+    public void setCurrentStreak(Integer currentStreak) {
+        this.currentStreak = currentStreak;
+    }
+
+    public Integer getBestStreak() {
+        return bestStreak;
+    }
+
+    public void setBestStreak(Integer bestStreak) {
+        this.bestStreak = bestStreak;
+    }
+
+    public Integer getBestWinElo() {
+        return bestWinElo;
+    }
+
+    public void setBestWinElo(Integer bestWinElo) {
+        this.bestWinElo = bestWinElo;
+    }
+
+    public Boolean getWonPreviousGame() {
+        return wonPreviousGame;
+    }
+
+    public void setWonPreviousGame(Boolean wonPreviousGame) {
+        this.wonPreviousGame = wonPreviousGame;
+    }
+
+    public String getBestWinPlayerId() {
+        return bestWinPlayerId;
+    }
+
+    public void setBestWinPlayerId(String bestWinPlayerId) {
+        this.bestWinPlayerId = bestWinPlayerId;
+    }
+
     //endregion
 }

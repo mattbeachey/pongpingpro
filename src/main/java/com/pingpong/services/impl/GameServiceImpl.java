@@ -12,8 +12,11 @@ import java.util.List;
 @Service
 public class GameServiceImpl implements GameService {
 
-    @Autowired
-    private GameRepository gameRepository;
+
+    GameRepository gameRepository;
+    public GameServiceImpl (GameRepository gameRepository){
+        this.gameRepository = gameRepository;
+    }
 
 
     @Override

@@ -3,6 +3,7 @@ package com.pingpong.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -76,7 +77,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/test/**")
                     .authenticated()
                     .and()
-                    .oauth2Login();
+                    .oauth2Login()
+                    .and()
+                    .csrf().disable();
         }
 //        else if ( authenticationMethod.equals("LDAP") ||
 //                authenticationMethod.equals("IN_MEMORY")){

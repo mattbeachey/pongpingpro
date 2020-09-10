@@ -22,27 +22,23 @@ public class GameController {
 
     private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
-////  Constructor Injection issues???
-//    GameService gameService;
-//    PlayerService playerService;
-//
-//    public GameController (GameService gameService, PlayerService playerService){
-//        this.gameService = gameService;
-//        this.playerService = playerService;
-//    }
-    @Autowired
-    private GameService gameService;
-    @Autowired
-    private PlayerService playerService;
-    @Autowired
-    private GameResult gameResult;
+//  Constructor Injection
+    GameService gameService;
+    PlayerService playerService;
+    GameResult gameResult;
+    public GameController (GameService gameService, PlayerService playerService, GameResult gameResult){
+        this.gameService = gameService;
+        this.playerService = playerService;
+        this.gameResult = gameResult;
+    }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+
+    @GetMapping("/all")
     public ResponseEntity<List<Game>>  getAllGames(){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(gameService.findAllGames());
     }
 
-    @RequestMapping(value = "{id}", method  =RequestMethod.GET)
+    @GetMapping("{id}")
     public ResponseEntity<Game> getOneGame(@PathVariable int id){
         try {
             Game foundGame = gameService.findGameById(id);
@@ -54,7 +50,7 @@ public class GameController {
         }
     }
 
-    @RequestMapping(value = "/new/{p1Id}/{p2Id}", method = RequestMethod.GET)
+    @GetMapping("/new/{p1Id}/{p2Id}")
     public ResponseEntity<Integer> setUpGame(@PathVariable String p1Id,
                                              @PathVariable String p2Id){
         try {
@@ -75,7 +71,7 @@ public class GameController {
         }
     }
 
-    @RequestMapping(value = "/new/{winId}/{loseId}/{winScore}/{loseScore}", method = RequestMethod.POST)
+    @PostMapping("/new/{winId}/{loseId}/{winScore}/{loseScore}")
     public ResponseEntity<Game> saveFinalGame(  @PathVariable String winId,
                                                 @PathVariable String loseId,
                                                 @PathVariable int winScore,

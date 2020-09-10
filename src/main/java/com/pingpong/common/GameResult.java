@@ -43,15 +43,37 @@ public class GameResult {
         newGame.setUpsetPercent((int)(winnerExpectedOutcome * 100));
         newGame.setEloDiff(eloDiff);
 
+        //adjust winner's best win
+        //if winner beat a player with a higher ELO of their previous best win, set this game's opponent as new best win
+        if (winner.getBestWinPlayerId() != null && loser.getEloRating() > winner.getBestWinElo()){
+            winner.setBestWinPlayerId(loser.getId());
+            winner.setBestWinElo(loser.getEloRating());
+        }
+        if (winner.getBestWinPlayerId() == null){
+            winner.setBestWinPlayerId(loser.getId());
+            winner.setBestWinElo(loser.getEloRating());
+        }
+
         //adjust respective ELO ratings and wins/losses
         winner.setEloRating(RatingAdjust.newRating(winner.getEloRating(), winnerExpectedOutcome, 1));
         int adjustedWins = winner.getWins() == null ? 1 : winner.getWins() + 1;
         winner.setWins(adjustedWins);
-        playerService.savePlayer(winner);
-
         loser.setEloRating(RatingAdjust.newRating(loser.getEloRating(), loserExpectedOutcome, 0));
         int adjustedLosses = loser.getLosses() == null ? 1 : loser.getLosses() + 1;
         loser.setLosses(adjustedLosses);
+
+        //adjust win streaks
+        if (winner.getWonPreviousGame()){
+            winner.setCurrentStreak(winner.getCurrentStreak() + 1);
+        } else {
+            winner.setCurrentStreak(1);
+        }
+        winner.setBestStreak(winner.getCurrentStreak() > winner.getBestStreak() ? winner.getCurrentStreak() : winner.getBestStreak());
+        winner.setWonPreviousGame(true);
+        loser.setWonPreviousGame(false);
+
+        //save player adjustments
+        playerService.savePlayer(winner);
         playerService.savePlayer(loser);
 
         //add adjusted scores to game and save it
@@ -63,7 +85,6 @@ public class GameResult {
     public int winOdds (int eloLow, int eloHigh){
         return (int)(RatingAdjust.expectedOutcome(eloLow, eloHigh) * 100);
     }
-
 }
 
 
